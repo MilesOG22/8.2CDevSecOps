@@ -1,15 +1,14 @@
 pipeline {
-  agent {
-    docker { image 'node:18' }
-  }
+  agent any
 
-  stages {
-    stage('Checkout') {
-      steps {
-        // Use the SCM that retrieved the Jenkinsfile (safe & re-uses credentials configured for the job)
-        checkout scm
-      }
-    }
+stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/MilesOG22/8.2CDevSecOps.git',
+                    credentialsId: 'github-pat'
+            }
+        }
 
     stage('Install Dependencies') {
       steps {
