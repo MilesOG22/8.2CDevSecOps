@@ -21,6 +21,17 @@ pipeline {
         sh 'npm test 2>&1 | tee test-output.log || true'
         archiveArtifacts artifacts: 'test-output.log', fingerprint: true
       }
+      post {
+        always {
+          emailext(
+            subject: "Test Stage: ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+            body: """<p>The Test stage completed with status: <b>${currentBuild.currentResult}</b></p>
+                     <p>Check console output: <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
+            to: "milesco22@gmail.com",
+            attachLog: true
+          )
+        }
+      }
     }
 
     stage('Generate Coverage Report') {
@@ -34,6 +45,17 @@ pipeline {
       steps {
         sh 'npm audit --audit-level=low 2>&1 | tee audit-output.log || true'
         archiveArtifacts artifacts: 'audit-output.log', fingerprint: true
+      }
+      post {
+        always {
+          emailext(
+            subject: "Security Scan Stage: ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+            body: """<p>The Security Scan stage completed with status: <b>${currentBuild.currentResult}</b></p>
+                     <p>Check console output: <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
+            to: "milesco22@gmail.com",
+            attachLog: true
+          )
+        }
       }
     }
   }
@@ -49,4 +71,5 @@ pipeline {
     }
   }
 }
+
 
