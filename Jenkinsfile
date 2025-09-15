@@ -46,7 +46,7 @@ stages {
                 body: """<p>Good news!</p>
                          <p>Build <b>${env.BUILD_NUMBER}</b> of job <b>${env.JOB_NAME}</b> succeeded.</p>
                          <p>Check console output: <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
-                to: "your-email@example.com"
+                to: "milesco22@gmail.com"
             )
         }
         failure {
