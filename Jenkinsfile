@@ -47,6 +47,12 @@ pipeline {
         to: "milesco22@gmail.com"
       )
     }
+
+  stage('Force Fail') {
+    steps {
+      sh 'exit 1'
+      }
+    }
   }
 }
 
