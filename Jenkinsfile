@@ -39,10 +39,24 @@ stages {
     }
   }
 
-  post {
-    always {
-      // Archive entire workspace snapshot that is small (optional)
-      archiveArtifacts artifacts: '**/*.log', allowEmptyArchive: true
-    }
+ post {
+        success {
+            emailext(
+                subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>Good news!</p>
+                         <p>Build <b>${env.BUILD_NUMBER}</b> of job <b>${env.JOB_NAME}</b> succeeded.</p>
+                         <p>Check console output: <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
+                to: "your-email@example.com"
+            )
+        }
+        failure {
+            emailext(
+                subject: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>Attention!</p>
+                         <p>Build <b>${env.BUILD_NUMBER}</b> of job <b>${env.JOB_NAME}</b> failed.</p>
+                         <p>Check console output: <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
+                to: "milesco22@gmail.com"
+            )
+        }
   }
 }
